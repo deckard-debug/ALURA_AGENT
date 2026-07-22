@@ -153,6 +153,7 @@ DIRECTORIO_ACTUAL = Path(__file__).parent.resolve()
 # Ruta a la carpeta data (un nivel arriba de src)
 ruta_documento = DIRECTORIO_ACTUAL.parent / "data"
 
+
 todos_los_documentos = []
 
 if ruta_documento.exists():
