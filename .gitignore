@@ -1,8 +1,43 @@
-venv/
-*.pyc
-__pycache__/
+# === VARIABLES DE ENTORNO ===
 .env
+.env.local
+
+# === BASES DE DATOS ===
 chroma_db/
-*.log
+*.db
+*.sqlite3
+
+# === PYTHON ===
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+venv/
+env/
+ENV/
+.venv/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
 .DS_Store
-*.ipynb_checkpoints/
+Thumbs.db
+
+# === LOGS ===
+*.log
+
+# === JUPYTER ===
+.ipynb_checkpoints/
+*.ipynb
+
+# === ARCHIVOS TEMPORALES ===
+*.tmp
+*.temp
