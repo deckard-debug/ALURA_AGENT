@@ -1,5 +1,8 @@
 # 1 importar librerias 
 import os
+import pandas as pd
+import json
+import re
 from dotenv import load_dotenv
 from pypdf import PdfReader
 from langchain_core.documents import Document
@@ -9,6 +12,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGener
 from langchain_chroma import Chroma
 from langchain_classic.chains.retrieval import create_retrieval_chain
 from langchain_classic.chains.combine_documents import create_stuff_documents_chain
+from pathlib import Path
 
 # 2 Crear Variables de Entorno
 load_dotenv()
@@ -19,120 +23,147 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 #     print("no se encontro la variables de entorno")
 
 
-# 3 Cargar el documento
-ruta_documento = "./data/documento.pdf"
+# 3 Cargar documentos
+
+def cargar_documentos(ruta: str):
+    """
+    Carga documento en multiples formatos:
+    - PDF: usa PyPDF
+    - CSV: usa pandas
+    - TXT: lectura simple
+    - Word: python-do
+    - Excel: pandas
+    - JSON: carga como texto
+    - MD: carga como texto
+    """
+    global RDocuments
+    documentos = []
+    ruta = Path(ruta)
+
+    formatdoc = ruta.suffix.lower()
+
+    if not ruta.exists():
+        raise FileNotFoundError(f"No se encontró: {ruta}")
+
+    # Cargar PDF
+    if formatdoc == '.pdf':
+        lector = PdfReader(str(ruta))
+        for i, pagina in enumerate(lector.pages):
+            texto = pagina.extract_text()
+            if texto.strip():
+                documentos.append(Document(
+                    page_content=texto, 
+                    metadata={"source": str(ruta), "page": i, "format": "PDF"}))
+        print(f"Paginas del documento {formatdoc}: {len(documentos)}")
+
+    # Cargar CSV
+    elif formatdoc == '.csv':
+        df = pd.read_csv(ruta)
+        for i, row in df.iterrows():
+            texto = " | ".join([f"{col}: {row[col]}" for col in df.columns])
+            documentos.append(Document(
+                    page_content=texto, 
+                    metadata={"source": str(ruta), "page": i, "format": "CSV"}))
+        print(f"Paginas del documento {formatdoc}: {len(documentos)}")
+
+    # Cargar TXT
+    elif formatdoc == '.txt':
+        with open(ruta, "r", encoding="utf-8") as formato:
+            texto = formato.read()
+            fragmentos = texto.split("\n\n")
+            for i, fragmento in enumerate(fragmentos):
+                if fragmento.strip():
+                    documentos.append(Document(
+                        page_content=texto, 
+                        metadata={"source": str(ruta), "page": i, "format": "TXT"}))
+            print(f"Paginas del documento {formatdoc}: {len(documentos)}")
+
+    # Cargar MD
+    elif formatdoc == '.md':
+        with open(ruta, "r", encoding="utf-8") as formato:
+
+            texto = formato.read()
+            fragmentos = re.split(r'\n##\s', texto)
+
+            for i, fragmento in enumerate(fragmentos):
+
+                if fragmento.strip():
+                    # Si es la primera sección, no tiene título
+                    if i == 0:
+                        titulo = "Introducción"
+                        contenido = fragmento
+                    else:
+                        lineas = fragmento.split('\n', 1)
+                        titulo = lineas[0].strip() if lineas else "Sección"
+                        contenido = lineas[1] if len(lineas) > 1 else ""
+
+                    texto_completo = f"{titulo}: {contenido}"
+                    documentos.append(Document(
+                        page_content=texto_completo, 
+                        metadata={"source": str(ruta), "page": i, "format": "MD"}))
+            print(f"Paginas del documento {formatdoc}: {len(documentos)}")
+
+    # Cargar JSON
+    elif formatdoc == '.json':
+        try:
+            with open(ruta, "r", encoding="utf-8") as formato:
+
+                datos = json.load(formato)
+
+                if isinstance(datos, list):
+
+                    for i, item in enumerate(datos):
+                        if isinstance(item, dict):
+
+                            texto = " | ".join([f"{k}: {v}" for k, v in item.items()])
+                            documentos.append(Document(
+                                page_content=texto,
+                                metadata={"source": str(ruta), "index": i, "format": "JSON"}
+                            ))
+
+                    print(f"Paginas del documento {formatdoc}: {len(documentos)}")
+
+                elif isinstance(datos, dict):
+
+                    texto = " | ".join([f"{k}: {v}" for k, v in datos.items()])
+                    documentos.append(Document(
+                        page_content=texto,
+                        metadata={"source": str(ruta), "format": "JSON"}
+                    ))
+
+                    print(f" JSON cargado: 1 elemento")
+                
+        except Exception:
+            print(f"ERROR AL LEER JSON {ruta.name}: {Exception}")
+
+    # Cargar EXCEL
+    elif formatdoc in ['.xlsx','xls']:
+        df = pd.read_excel(ruta)
+        for i, row in df.iterrows():
+            texto = " | ".join([f"{col}: {row[col]}" for col in df.columns])
+            documentos.append(Document(
+                    page_content=texto, 
+                    metadata={"source": str(ruta), "page": i, "format": "EXCEL"}))
+        print(f"Paginas del documento {formatdoc}: {len(documentos)}")
+
+    else:
+        raise ValueError(f"formato no soportado: {ruta.suffix}")
+
+    return documentos
+
+ruta_documento = "./data/"
 
 try:
-    lector = PdfReader(ruta_documento)
-    documento = []
-    for i, pagina in enumerate(lector.pages):
-        texto = pagina.extract_text()
-        if texto.strip():
-            documento.append(Document(page_content=texto, metadata={"source": ruta_documento, "page": i}))
-    print(f"Paginas del documento: {len(documento)}")
-except:
-    print(f"no se encontro el documento, ruta: {ruta_documento}")
+# Cargar TODOS los documentos en la carpeta data/
+    todos_los_documentos = []
+    for archivo in Path(ruta_documento).iterdir():
+        if archivo.suffix.lower() in ['.pdf', '.csv', '.txt', '.xlsx', '.xls', '.md', '.json']:
+            print(f" Cargando: {archivo.name}")
+            docs = cargar_documentos(str(archivo))
+            todos_los_documentos.extend(docs)
+
+    print(f"\n TOTAL: {len(todos_los_documentos)} documentos cargados")
+
+except Exception:
+    print(f" Error: {Exception}")
     exit(1)
-
-# 4 Dividir en Fragmentos para que la IA tenga informacion relevante
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=1500,
-    chunk_overlap=50,
-    length_function=len,
-    separators=["\n\n","\n","."," ",""]
-)
-
-fragmentos = text_splitter.split_documents(documento)
-# print(f"documento dividido en {len(fragmentos)} fragmentos")
-# print(f"fragmentos:\n{fragmentos[0].page_content[:200]}... ")
-
-# 5 EMBEDDINGS y Base de Datos Vectorial
-embeddings = GoogleGenerativeAIEmbeddings(
-    model="gemini-embedding-001",
-    google_api_key = GOOGLE_API_KEY
-)
-
-vectorstore = Chroma.from_documents(
-    documents=fragmentos,
-    embedding=embeddings,
-    persist_directory="./chroma_db"
-)
-# print(f"Base de datos vectorial creada con {len(fragmentos)} fragmentos")
-
-# 6 Agente RAG
-llm = ChatGoogleGenerativeAI(
-    model="gemini-3.6-flash",
-    google_api_key = GOOGLE_API_KEY,
-    #temperature = 0.3
-)
-
-retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
-system_prompt = (
-    """
-    Eres un asistente experto. Responde las preguntas del usuario basandote unicamente
-    en el contexto recuperado, NO inventes nueva informacion, No seas redundante en la
-    misma infromacion, en caso de no poseer la respuesta a la pregunta permitete decir
-    "no se"
-    utiliza unicamente el contexto recuperado: {context}
-    """
-)
-prompt = ChatPromptTemplate.from_messages([
-        ("system",system_prompt),
-        ("human", "{input}"),
-    ])
-
-combine_docs_chain = create_stuff_documents_chain(llm, prompt)
-
-qa_chain = create_retrieval_chain(retriever, combine_docs_chain)
-
-# ============================================
-# 7. FUNCIÓN PARA PREGUNTAR
-# ============================================
-
-def preguntar(pregunta: str) -> str:
-    """
-    Función que recibe una pregunta y devuelve la respuesta del agente.
-    
-    Args:
-        pregunta: Texto de la pregunta del usuario
-        
-    Returns:
-        Respuesta del agente basada en el documento
-    """
-    try:
-        respuesta = qa_chain.invoke({"input": pregunta})
-        return respuesta["answer"]
-    except Exception as e:
-        return f"Error: {str(e)}"
-
-# ============================================
-# 8. INTERFAZ POR CONSOLA
-# ============================================
-
-print("\n" + "="*60)
-print("AGENTE RAG - CHAT CON TU DOCUMENTO")
-print("="*60)
-print("Escribe 'salir' o 'exit' para terminar")
-print("Escribe 'info' para ver estadísticas")
-print("="*60 + "\n")
-
-while True:
-    pregunta = input("Tú: ").strip()
-    
-    if pregunta.lower() in ["salir", "exit", "quit"]:
-        print("\n¡Hasta luego!")
-        break
-    
-    if pregunta.lower() == "info":
-        print(f"\n Estadísticas:")
-        print(f"   - Páginas en PDF: {len(documento)}")
-        print(f"   - Fragmentos indexados: {len(fragmentos)}")
-        print(f"   - Modelo: Gemini 3.6 Flash\n")
-        continue
-    
-    if not pregunta:
-        continue
-    
-    print("\nAgente: ", end="", flush=True)
-    respuesta = preguntar(pregunta)
-    print(respuesta + "\n")

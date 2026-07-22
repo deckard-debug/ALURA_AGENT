@@ -1,0 +1,66 @@
+[
+  {
+    "fecha": "2026-01-20",
+    "titulo": "Nuevo sistema de agendamiento digital",
+    "tipo": "Comunicado",
+    "descripcion": "Se implementa nuevo sistema de agendamiento en la plataforma web. Los pacientes podrán agendar, cancelar y reprogramar citas sin contacto con operadores.",
+    "area": "Tecnología",
+    "prioridad": "Alta"
+  },
+  {
+    "fecha": "2026-01-15",
+    "titulo": "Cambio en horario de atención de urgencias",
+    "tipo": "Aviso",
+    "descripcion": "El servicio de urgencias ahora funciona 24/7 con atención priorizada. Se ha contratado personal adicional para turnos nocturnos.",
+    "area": "Operaciones",
+    "prioridad": "Alta"
+  },
+  {
+    "fecha": "2026-01-10",
+    "titulo": "Nuevos convenios con EPS Sura y Compensar",
+    "tipo": "Comunicado",
+    "descripcion": "Se han firmado nuevos contratos con EPS Sura y Compensar. Los afiliados pueden acceder a tarifas preferenciales desde el 1 de febrero.",
+    "area": "Legal",
+    "prioridad": "Media"
+  },
+  {
+    "fecha": "2026-01-05",
+    "titulo": "Capacitación obligatoria en protección de datos",
+    "tipo": "Capacitación",
+    "descripcion": "Todo el personal debe completar el curso de protección de datos personales antes del 28 de febrero. Curso disponible en la plataforma interna.",
+    "area": "Calidad",
+    "prioridad": "Alta"
+  },
+  {
+    "fecha": "2025-12-20",
+    "titulo": "Cierre de inventario anual",
+    "tipo": "Aviso",
+    "descripcion": "Durante la última semana de diciembre, el área de farmacia realizará inventario. Solo se entregarán medicamentos de urgencia.",
+    "area": "Farmacia",
+    "prioridad": "Media"
+  },
+  {
+    "fecha": "2025-12-15",
+    "titulo": "Bono de fin de año para empleados",
+    "tipo": "Comunicado",
+    "descripcion": "Se aprobó el pago del bono de fin de año equivalente al 15% del salario. El pago se realizará el 20 de diciembre.",
+    "area": "Recursos Humanos",
+    "prioridad": "Alta"
+  },
+  {
+    "fecha": "2025-12-10",
+    "titulo": "Nuevo protocolo de limpieza y desinfección",
+    "tipo": "Manual",
+    "descripcion": "Se actualiza el protocolo de limpieza para áreas críticas. Se incrementa la frecuencia de desinfección en salas de espera y consultorios.",
+    "area": "Calidad",
+    "prioridad": "Alta"
+  },
+  {
+    "fecha": "2025-12-01",
+    "titulo": "Resultados de encuesta de satisfacción 2025",
+    "tipo": "Reporte",
+    "descripcion": "La encuesta de satisfacción 2025 muestra un índice del 87%. Mejoras destacadas: atención al paciente (91%) y tiempos de espera (84%).",
+    "area": "Calidad",
+    "prioridad": "Media"
+  }
+]

@@ -1,0 +1,11 @@
+indicador,area,meta,actual_enero,actual_febrero,actual_marzo
+Satisfacción del paciente,Atención,90%,87%,89%,91%
+Tiempo de espera consulta,Atención,<30 min,25 min,28 min,22 min
+Tiempo de espera urgencias,Urgencias,<60 min,45 min,52 min,40 min
+Cumplimiento de citas,Atención,95%,93%,94%,96%
+Infecciones intrahospitalarias,Calidad,<1%,0.8%,0.9%,0.7%
+Reingresos 30 días,Calidad,<5%,4.5%,4.8%,4.2%
+Tiempo de facturación,Administrativo,3 días,2 días,3 días,2 días
+Cobro a EPS,Administrativo,90%,88%,89%,92%
+Capacitación completada,RRHH,100%,95%,92%,98%
+Reportes de incidentes,Seguridad,100%,100%,100%,100%

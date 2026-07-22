@@ -1,0 +1,45 @@
+CONTRATO DE PRESTACIÓN DE SERVICIOS MÉDICOS
+============================================
+
+CONTRATO No: CS-2026-001
+FECHA: 15 de enero de 2026
+
+ENTRE:
+- CLÍNICA SALUD+ S.A.S., NIT: 900.123.456-7, representada por el Dr. Carlos Méndez
+- EPS SALUDTOTAL, NIT: 800.456.789-0, representada por la Dra. Laura Gómez
+
+OBJETO DEL CONTRATO:
+Prestación de servicios médicos asistenciales a los afiliados de EPS SaludTotal
+en las instalaciones de Clínica Salud+.
+
+CONDICIONES GENERALES:
+1. Cobertura: 100% de consultas médicas generales y especializadas.
+2. Procedimientos: Cobertura del 80% en cirugías y procedimientos complejos.
+3. Exámenes: Cobertura del 90% en exámenes de laboratorio y diagnóstico.
+4. Urgencias: Atención inmediata las 24 horas, los 365 días del año.
+
+TARIFAS Y PAGOS:
+- Consulta general: $45.000 COP (tarifa preferencial).
+- Consulta especializada: $85.000 COP.
+- Cirugía ambulatoria: $350.000 COP.
+- Hospitalización (día): $280.000 COP.
+- Plazo de pago: 30 días desde la facturación.
+
+PLAZO DEL CONTRATO:
+- Duración: 12 meses (prorrogable automáticamente).
+- Fecha de inicio: 1 de febrero de 2026.
+- Fecha de terminación: 31 de enero de 2027.
+
+CONFIDENCIALIDAD:
+Las partes se comprometen a mantener la confidencialidad de la información
+del paciente y de los términos comerciales del presente contrato.
+
+RESOLUCIÓN DEL CONTRATO:
+Cualquiera de las partes puede resolver el contrato con 30 días de aviso por escrito.
+En caso de incumplimiento grave, se podrá resolver de forma inmediata.
+
+FIRMAS:
+_____________________________      _____________________________
+Dr. Carlos Méndez                  Dra. Laura Gómez
+Clínica Salud+ S.A.S.              EPS SaludTotal
+NIT: 900.123.456-7                 NIT: 800.456.789-0
